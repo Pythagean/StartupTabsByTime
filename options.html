@@ -1,0 +1,32 @@
+<html style="min-width:500px;">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<head><title>Startup Tabs by Time Options</title></head>
+<script type="text/javascript" src="loadData.js"></script>
+<table id="periodsTable" width="100%">
+<tr>
+  <td>Enabled</td>
+  <td>Description</td>
+  <td>Start Time</td>
+  <td>End Time</td>
+  <td>Sites</td>
+  <td>Edit</td>
+</tr>
+<tr>
+  <td><input type="checkbox" id="period1_enabled" value="enabled"></td>
+  <td><input type="text" id="period1_desc" value="Default" style="width: 100%"></td>
+  <td><input type="text" id="period1_start" value="-"></td>
+  <td><input type="text" id="period1_end" value="-"></td>
+  <td><input type="text" id="period1_sites" value="Google"></td>
+  <td><input type="button" id="period1_editSites" value="Edit Sites"></td>
+</tr>
+
+</table><br>
+<input id="saveButton" type="button" value="Save Changes" style="float:left">
+<input id="deleteButton" type="button" value="Delete All" style="float:left">
+<input id="addMoreButton" type="button" value="Add more" style="float:right">
+<br>
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+</html>
