@@ -37,15 +37,19 @@ function saveChanges() {
           
           chrome.storage.sync.set({enabled: enabledSave}, function(){
             console.log("Saved " + enabled + " as " + enabledSave);
+            chrome.storage.sync.set({desc: descSave}, function(){
+              console.log("Saved " + desc+ " as " + descSave);
+              chrome.storage.sync.set({start: startSave}, function(){
+                chrome.storage.sync.set({end: endSave}, function(){
+                  chrome.storage.sync.set({sites: sitesSave}, function(){});
+                });
+              
+              });
+              
+            });
+            
           });
-          chrome.storage.sync.set({desc: descSave}, function(){
-            console.log("Saved " + desc+ " as " + descSave);
-          });
-          chrome.storage.sync.set({start: startSave}, function(){});
-          chrome.storage.sync.set({end: endSave}, function(){});
-          chrome.storage.sync.set({sites: sitesSave}, function(){
-           // i++;
-          });
+          
           
         });
       })(i);
@@ -71,27 +75,30 @@ function getChromeStorage() {
   chrome.storage.sync.get("numberPeriods", function(data){
     numberPeriods = data['numberPeriods'];
     for (var i = 1; i < numberPeriods; i++) {
-      var enabled = "'period" + i + "_enabled'";
-      var desc = "'period" + i + "_desc'";
-      var start = "'period" + i + "_start'";
-      var end = "'period" + i + "_end'";
-      var sites = "'period" + i + "_sites'";
-    
-      chrome.storage.sync.get('enabled', function(data){
-        console.log("chrome.storage.sync.get[" + enabled + "]: " + data['enabled']);
-      });
-      chrome.storage.sync.get('desc', function(data){
-        console.log("chrome.storage.sync.get[" + desc + "]: " + data['desc']);
-      });
-      chrome.storage.sync.get('start', function(data){
-        //console.log("chrome.storage.sync.get[" + start + "]: " + data['start']);
-      });
-      chrome.storage.sync.get('end', function(data){
-        //console.log("chrome.storage.sync.get[" + end + "]: " + data['end']);
-      });
-      chrome.storage.sync.get('sites', function(data){
-        //console.log("chrome.storage.sync.get[" + sites + "]: " + data['sites']);
-      });
+     (function(x) {
+        var enabled = "'period" + x + "_enabled'";
+        var desc = "'period" + x + "_desc'";
+        var start = "'period" + x + "_start'";
+        var end = "'period" + x + "_end'";
+        var sites = "'period" + x + "_sites'";
+      
+        chrome.storage.sync.get('enabled', function(data){
+          console.log("chrome.storage.sync.get[" + enabled + "]: " + data['enabled']);
+        });
+        chrome.storage.sync.get('desc', function(data){
+          console.log("chrome.storage.sync.get[" + desc + "]: " + data['desc']);
+        });
+        chrome.storage.sync.get('start', function(data){
+          //console.log("chrome.storage.sync.get[" + start + "]: " + data['start']);
+        });
+        chrome.storage.sync.get('end', function(data){
+          //console.log("chrome.storage.sync.get[" + end + "]: " + data['end']);
+        });
+        chrome.storage.sync.get('sites', function(data){
+          //console.log("chrome.storage.sync.get[" + sites + "]: " + data['sites']);
+        });
+     })(i);
+      
     }
   })
   
