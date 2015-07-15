@@ -1,4 +1,4 @@
-function saveChanges() {
+/* function saveChanges() {
         
         var table = document.getElementById('periodsTable');
         var tableRows = table.rows.length;
@@ -19,7 +19,7 @@ function saveChanges() {
           descriptionsArray.push(document.getElementById('period' + i + '_desc').value);
           startTimesArray.push(document.getElementById('period' + i + '_start').value);
           endTimesArray.push(document.getElementById('period' + i + '_end').value); */
-          localStorage["period" + i + "_enabled"] = document.getElementById('period' + i + '_enabled').checked;
+       /*    localStorage["period" + i + "_enabled"] = document.getElementById('period' + i + '_enabled').checked;
           localStorage["period" + i + "_desc"] = document.getElementById('period' + i + '_desc').value;
           localStorage["period" + i + "_start"] = document.getElementById('period' + i + '_start').value;
           localStorage["period" + i + "_end"] = document.getElementById('period' + i + '_end').value;
@@ -27,15 +27,15 @@ function saveChanges() {
        
         }
 
-};
+}; */ 
 
 function onInit() {
   
-  window.alert("loaded");
-  
+ // window.alert("loaded");
+  console.log(chrome.storage);
 }
 
-function addTableRows() {
+/* function addTableRows() {
   
   var table = document.getElementById('periodsTable');
   var tableRows = table.rows.length;
@@ -52,10 +52,10 @@ function addTableRows() {
   cell3.innerHTML = "<input type='time' id='period" + tableRows + "_start'>";
   cell4.innerHTML = "<input type='time' id='period" + tableRows + "_end'>";
 
-}
+} */
 
 document.addEventListener('DOMContentLoaded', onInit, false);
 
-document.getElementById('addMoreButton').addEventListener('click', addTableRows);
+//document.getElementById('addMoreButton').addEventListener('click', addTableRows);
 
-document.getElementById('saveButton').addEventListener('click', saveChanges);
+//document.getElementById('saveButton').addEventListener('click', saveChanges);

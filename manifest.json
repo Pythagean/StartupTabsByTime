@@ -5,8 +5,10 @@
   "version": "1.0",
   
   "permissions": [
+    "tabs",
     "storage",
-    "tabs"
+    "http://*/*", 
+    "https://*/*"
   ],
   
   "background": {
@@ -22,10 +24,10 @@
     "default_popup": "popup.html",
     "default_title": "Click here!"
   },
-  "permissions": [
+  /* "permissions": [
     "activeTab",
     "https://ajax.googleapis.com/"
-  ],
+  ], */
   
   "chrome_settings_overrides": {
     "startup_pages": ["http://www.google.co.nz"]
