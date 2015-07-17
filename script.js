@@ -145,7 +145,18 @@ function addEditSitesButtonMethods() {
 
 function editSites(periodNumber) {
   
-  window.alert("' " + periodNumber +  "' Edit Sites Clicked")
+  //window.alert("' " + periodNumber +  "' Edit Sites Clicked")
+
+  chrome.windows.create({
+    //tabId: tab.id,
+    url: chrome.extension.getURL('editSites.html'),
+    type: 'popup',
+    focused: true,
+    width: 400,
+    height: 200
+  });
+
+
   
 }
 
