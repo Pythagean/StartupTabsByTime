@@ -28,27 +28,28 @@ function saveChanges() {
           var start = "'period" + x + "_start'";
           var end = "'period" + x + "_end'";
           var sites = "'period" + x + "_sites'";
-        
-          var enabledSave = document.getElementById('period' + x + '_enabled').checked;
-          var descSave = document.getElementById('period' + x + '_desc').value;
-          var startSave = document.getElementById('period' + x + '_start').value;
-          var endSave = document.getElementById('period' + x + '_end').value;
-          var sitesSave = document.getElementById('period' + x + '_sites').value;
           
-          chrome.storage.sync.set({enabled: enabledSave}, function(){
-            console.log("Saved " + enabled + " as " + enabledSave);
-            chrome.storage.sync.set({desc: descSave}, function(){
-              console.log("Saved " + desc+ " as " + descSave);
-              chrome.storage.sync.set({start: startSave}, function(){
-                chrome.storage.sync.set({end: endSave}, function(){
-                  chrome.storage.sync.set({sites: sitesSave}, function(){});
-                });
-              
-              });
-              
-            });
-            
+          var enabledObj = {};
+          var descObj = {};
+          var startObj = {};
+          var endObj = {};
+          var sitesObj = {};
+          
+          enabledObj[enabled] = document.getElementById('period' + x + '_enabled').checked;
+          descObj[desc] = document.getElementById('period' + x + '_desc').value;
+          startObj[start] = document.getElementById('period' + x + '_start').value;
+          endObj[end] = document.getElementById('period' + x + '_end').value;
+          sitesObj[sites] = document.getElementById('period' + x + '_sites').value;
+          
+          chrome.storage.sync.set(enabledObj, function(){
+           // console.log("Saved " + enabled + " as " + enabledSave);
           });
+          chrome.storage.sync.set(descObj, function(){
+           // console.log("Saved " + desc+ " as " + descSave);
+          });
+          chrome.storage.sync.set(startObj, function(){});
+          chrome.storage.sync.set(endObj, function(){});
+          chrome.storage.sync.set(sitesObj, function(){});
           
           
         });
@@ -69,7 +70,16 @@ function deleteLocal() {
   chrome.storage.sync.set({'numberPeriods': numberPeriods}, function(){console.log("Saved 'numberPeriods' as " + numberPeriods)});
 }
 
-function getChromeStorage() {
+/* function getChromeStorage() {
+  
+  var dataLoaded = {};
+  var numberPeriods = 0;
+  chrome.storage.sync.get("numberPeriods", function(data){
+    numberPeriods = data['numberPeriods'];
+    for (var i = 1; i < numberPeriods; i++) {
+      
+    }
+  });
   
   var numberPeriods = 0;
   chrome.storage.sync.get("numberPeriods", function(data){
@@ -82,19 +92,19 @@ function getChromeStorage() {
         var end = "'period" + x + "_end'";
         var sites = "'period" + x + "_sites'";
       
-        chrome.storage.sync.get('enabled', function(data){
+        chrome.storage.sync.get(enabled, function(data){
           console.log("chrome.storage.sync.get[" + enabled + "]: " + data['enabled']);
         });
-        chrome.storage.sync.get('desc', function(data){
+        chrome.storage.sync.get(desc, function(data){
           console.log("chrome.storage.sync.get[" + desc + "]: " + data['desc']);
         });
-        chrome.storage.sync.get('start', function(data){
+        chrome.storage.sync.get(start, function(data){
           //console.log("chrome.storage.sync.get[" + start + "]: " + data['start']);
         });
-        chrome.storage.sync.get('end', function(data){
+        chrome.storage.sync.get(end, function(data){
           //console.log("chrome.storage.sync.get[" + end + "]: " + data['end']);
         });
-        chrome.storage.sync.get('sites', function(data){
+        chrome.storage.sync.get(sites, function(data){
           //console.log("chrome.storage.sync.get[" + sites + "]: " + data['sites']);
         });
      })(i);
@@ -103,8 +113,41 @@ function getChromeStorage() {
   })
   
   
+} */
+function addEditSitesButtonMethods() {
+  
+  chrome.storage.sync.get("numberPeriods", function(data){
+    numberRowsToAdd = data['numberPeriods'] + 1;
+    
+    //console.log("TEST: " + numberRowsToAdd);
+    
+    if (numberRowsToAdd > 20)
+      numberRowsToAdd = 20;
+    
+    for (var i = 1; i < numberRowsToAdd; i++) {
+      (function(x) {
+       // console.log("TEST: ");
+        buttonID = "period" + x + "_editSites"
+        //console.log(buttonID + " -> " + "editSites")
+        document.getElementById(buttonID).addEventListener('click', function() {
+          editSites(x);
+        });
+        
+      })(i);
+      
+    };
+    
+  });
+  
 }
 
+
+
+function editSites(periodNumber) {
+  
+  window.alert("' " + periodNumber +  "' Edit Sites Clicked")
+  
+}
 
 
 function addTableRows() {
@@ -134,7 +177,10 @@ function addTableRows() {
 document.getElementById('addMoreButton').addEventListener('click', addTableRows);
 document.getElementById('deleteButton').addEventListener('click', deleteLocal);
 
-document.getElementById('chromeStorageButton').addEventListener('click', getChromeStorage);
+
+//document.getElementById('chromeStorageButton').addEventListener('click', getChromeStorage);
 
 
 document.getElementById('saveButton').addEventListener('click', saveChanges);
+
+document.addEventListener('DOMContentLoaded', addEditSitesButtonMethods, false);
