@@ -7,17 +7,52 @@ function okClick() {
 }
 
 function cancelClick() {
-  window.alert("Cancel");
-  //Close window
+  window.close();
 }
 
 function addMoreClick() {
-  window.alert("Add More");
-  //Check if table is <10
-  //addElements
+  var table = document.getElementById('sitesTable');
+  var tableRows = table.rows.length;
+  
+  if (tableRows < 11) {
+    //window.alert(tableRows);
+    var row = table.insertRow(-1);
+    
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    
+    cell1.innerHTML = "<input type='text' id='site" + tableRows + "_url' value='' style='width: 100%'>";
+    cell2.innerHTML = "<input type='text' id='site" + tableRows + "_name' value='' style='width: 100%'>";
+  } else {
+    var addMoreButton = document.getElementById('addMoreButton');
+    addMoreButton.disabled = true;
+  }
 }
 
+function breakDownURL(url) {
+    var domain = "",
+        page = "";
+    //remove "http://"
+    if (url.indexOf("http://") == 0) {
+        url = url.substr(7);
+    }
+    //remove "www."
+    if (url.indexOf("www.") == 0) {
+        url = url.substr(4);
+    }
+    domain = url.split('/')[0].split('.')[0]
+    if (url.split('/').length > 1) {
+        page = url.split('/')[1].split('.')[0];
+    }
+    document.write("domain : " + domain + 
+      (page == "" ? "" : " page : " + page) + page + "<br/>");
+}
+
+//function enterURL
+
 function loadSiteData() {
+  
+  
   
   //Get number of sites
   //Create rows
@@ -52,7 +87,7 @@ function loadSiteData() {
 }
 
 
-document.getElementById('site1_url').addEventListener('click', okClick);
+//document.getElementById('site1_url').addEventListener('click', okClick);
 
 document.getElementById('okButton').addEventListener('click', okClick);
 document.getElementById('cancelButton').addEventListener('click', cancelClick);

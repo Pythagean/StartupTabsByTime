@@ -9,6 +9,7 @@ function onInit() {
   var startData = "";
   var endData = "";
   var sitesData = "";
+  var numberSitesData = "";
         
   chrome.storage.sync.get("numberPeriods", function(data){
     numberRowsToAdd = data['numberPeriods'] + 1;
@@ -24,6 +25,7 @@ function onInit() {
         var start = "'period" + x + "_start'";
         var end = "'period" + x + "_end'";
         var sites = "'period" + x + "_sites'";
+        var numberSites = "'period" + x + "_numberSites'";
         
         if (x != 1)
           addTableRows();
@@ -58,6 +60,11 @@ function onInit() {
           document.getElementById('period' + x + '_sites').value = sitesData;
         });
         
+        /* chrome.storage.sync.get(numberSites, function(data){
+          numberSitesData = data[numberSites];
+          //document.getElementById('period' + x + '_numberSites').value = numberSitesData;
+        });
+         */
         
  
         
