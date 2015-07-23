@@ -29,6 +29,7 @@ function saveChanges() {
           var end = "'period" + x + "_end'";
           var sites = "'period" + x + "_sites'";
           var numberSites = "'period" + x + "_numberSites'";
+          var urls = "'period" + x + "_urls'";
           
           var enabledObj = {};
           var descObj = {};
@@ -36,6 +37,7 @@ function saveChanges() {
           var endObj = {};
           var sitesObj = {};
           var numberSitesObj = {};
+          var urlsObj = {};
           
           enabledObj[enabled] = document.getElementById('period' + x + '_enabled').checked;
           descObj[desc] = document.getElementById('period' + x + '_desc').value;
@@ -59,7 +61,7 @@ function saveChanges() {
           chrome.storage.sync.set(endObj, function(){});
           chrome.storage.sync.set(sitesObj, function(){});
           chrome.storage.sync.set(numberSitesObj, function(){});
-          
+          chrome.storage.sync.set(urlsObj, function(){});
           
         });
       })(i);
@@ -164,7 +166,7 @@ function editSites(periodNumber) {
     
     chrome.windows.create({
       //tabId: tab.id,
-      url: chrome.extension.getURL('editSites.html?numSites=' + numberSites),
+      url: chrome.extension.getURL('editSites.html?numSites=' + numberSites + '&period=' + periodNumber),
       type: 'popup',
       focused: true,
       width: 400,

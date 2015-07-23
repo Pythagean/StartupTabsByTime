@@ -1,9 +1,36 @@
 
 function okClick() {
-  window.alert("OK");
-  //Run through and save sites
-  //Create string on Names
+
+  var tableRows = document.getElementById('sitesTable').rows.length; 
+  var numberSites = getURLParameter("numSites");
+  var numberSitesLabel = "'period" + getURLParameter("period") + "_numberSites'";
   
+  var urlsString = "";
+  var namesString = "";
+  
+  var numberSites = 0;
+  chrome.storage.sync.set({numberSitesLabel: 0}, function(){
+    var i = 1;
+      for(i = 1; i < tableRows; i++) {
+      (function(x) {
+
+        numberSites += 1;
+
+        //Add comma to string if not first site
+        if (numberSites != 1) {
+          urlsString += ",";
+          namesString += ",";
+        }
+            
+        //Add each row to string
+        urlsString += document.getElementById('site' + x + '_url').value;
+        namesString += document.getElementById('site' + x + '_name').value;
+
+      })(i);      
+    }
+    window.alert("urlsString: " + urlsString);
+    window.alert("namesString: " + namesString);
+  });
 }
 
 function cancelClick() {
@@ -70,11 +97,15 @@ function onURLChange(siteNumber) {
 }
 
 
+function getURLParameter(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+}
+
+
 
 function loadSiteData() {
-  
-  var url = window.location.href;
-  var numberSites = url.substring(url.indexOf("?")+1).split("=")[1];
+
+  numberSites = getURLParameter("numSites");
   
   if (numberSites == 0) {
     
@@ -92,41 +123,7 @@ function loadSiteData() {
     };
     
   }
-  
-  
-  
- // window.alert(numberSites);
-  
-  //Get number of sites
-  //Create rows
-  //Add elements
-  //Load Data
-  
-  
-  
-  /* chrome.storage.sync.get("numberPeriods", function(data){
-    numberRowsToAdd = data['numberPeriods'] + 1;
-    
-    //console.log("TEST: " + numberRowsToAdd);
-    
-    if (numberRowsToAdd > 20)
-      numberRowsToAdd = 20;
-    
-    for (var i = 1; i < numberRowsToAdd; i++) {
-      (function(x) {
-       // console.log("TEST: ");
-        buttonID = "period" + x + "_editSites"
-        //console.log(buttonID + " -> " + "editSites")
-        document.getElementById(buttonID).addEventListener('click', function() {
-          editSites(x);
-        });
-        
-      })(i);
-      
-    };
-    
-  }); */
-  
+   
 }
 
 
