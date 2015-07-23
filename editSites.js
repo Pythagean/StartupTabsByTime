@@ -13,7 +13,6 @@ function cancelClick() {
 function addMoreClick() {
   var table = document.getElementById('sitesTable');
   var tableRows = table.rows.length;
-  
    
   //window.alert(tableRows);
   var row = table.insertRow(-1);
@@ -28,36 +27,49 @@ function addMoreClick() {
     var addMoreButton = document.getElementById('addMoreButton');
     addMoreButton.disabled = true;
   }
+  
+  document.getElementById('site' + tableRows + '_url').addEventListener('blur', function() {
+    onURLChange(tableRows);
+  });
+  
 }
 
 function breakDownURL(url) {
+    var page = url;
     //remove "http://"
-    if (url.indexOf("http://") == 0) {
-        url = url.substr(7);
+    if (page.indexOf("http://") == 0) {
+        page = page.substr(7);
     }
     //remove "www."
-    if (url.indexOf("www.") == 0) {
-        url = url.substr(4);
+    if (page.indexOf("www.") == 0) {
+        page = page.substr(4);
     }
-    if (url.indexOf(".") != -1) {
-      var page = url.substring(0, url.indexOf('.'));
+    //remove after last "."
+    if (page.indexOf(".") != -1) {
+      page = page.substring(0, page.indexOf('.'));
     }
     
+    //Capitalizes first character
+    page = page[0].toUpperCase() + page.substr(1);
     
-   // page = url.substring(url.lastIndexOf('/') + 1)
     return page;
 }
 
+//Called when url text box is chaged
+//Breaks down url and puts it into name text box
 function onURLChange(siteNumber) {
   
   var urlTextBoxID = 'site' + siteNumber + '_url';
-  var urlTextBoxValue = document.getElementById(urlTextBoxID).value;
+  var nameTextBoxID = 'site' + siteNumber + '_name';
   
-  window.alert(breakDownURL(urlTextBoxValue));
+  var urlTextBoxValue = document.getElementById(urlTextBoxID).value;
+  var nameTextBox = document.getElementById(nameTextBoxID);
+  
+  nameTextBox.value = breakDownURL(urlTextBoxValue);
   
 }
 
-//function enterURL
+
 
 function loadSiteData() {
   
