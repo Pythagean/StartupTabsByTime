@@ -42,9 +42,13 @@ function saveChanges() {
           startObj[start] = document.getElementById('period' + x + '_start').value;
           endObj[end] = document.getElementById('period' + x + '_end').value;
           sitesObj[sites] = document.getElementById('period' + x + '_sites').value;
-          var sitesArray = sitesObj[sites].split(",")
-          numberSitesObj[numberSites] = sitesArray.length;
-          
+          if (sitesObj[sites] == '') {
+            numberSitesObj[numberSites] = 0;
+          } else {
+            var sitesArray = sitesObj[sites].split(",")
+            numberSitesObj[numberSites] = sitesArray.length;
+          }
+         
           chrome.storage.sync.set(enabledObj, function(){
            // console.log("Saved " + enabled + " as " + enabledSave);
           });
@@ -160,11 +164,11 @@ function editSites(periodNumber) {
     
     chrome.windows.create({
       //tabId: tab.id,
-      url: chrome.extension.getURL('editSites.html'),
+      url: chrome.extension.getURL('editSites.html?numSites=' + numberSites),
       type: 'popup',
       focused: true,
       width: 400,
-      height: 200
+      height: 370
     });
   });
   
@@ -202,6 +206,7 @@ function addTableRows() {
     addMoreButton.disabled = true;
   }
 }
+
 
 
 document.getElementById('addMoreButton').addEventListener('click', addTableRows);
