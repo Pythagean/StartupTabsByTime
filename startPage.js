@@ -8,6 +8,9 @@ function openStartUpTabs() {
   var endData = "";
   var urlsData = "";
   
+  var activePeriod = "Default";
+  var activePeriodUrls = "";
+  
   var afterStart = false;
   var beforeEnd = false;
   var currentHour = new Date().getHours();
@@ -24,9 +27,6 @@ function openStartUpTabs() {
         var start = "'period" + x + "_start'";
         var end = "'period" + x + "_end'";
         var urls = "'period" + x + "_urls'";
-        
-        
-        //PROBLEM here with asynchronous gets
         
         chrome.storage.sync.get(enabled, function(data){
           enabledData = data[enabled];
@@ -59,29 +59,42 @@ function openStartUpTabs() {
             var periodMinuteEnd = endData.split(':')[1];
             
             if (currentHour > periodHourStart && currentHour < periodHourEnd) {
-              window.alert(descData + " period active");
+              if (activePeriod == "Default"){
+                activePeriod = descData;
+                activePeriodUrls = urlsData;
+              }
             }
             if (currentHour == periodHourStart && currentMinute > periodMinuteStart) {
-              window.alert(descData + " period active");
+              if (activePeriod == "Default"){
+                activePeriod = descData;
+                activePeriodUrls = urlsData;
+              }
             }
             if (currentHour == periodHourEnd && currentMinute < periodMinuteEnd) {
-              window.alert(descData + " period active");
+              if (activePeriod == "Default"){
+                activePeriod = descData;
+                activePeriodUrls = urlsData;
+              }
             }
-            
-            //window.alert("period" + x + "= " + periodHourStart + ":" + periodMinuteStart + " to " + periodHourEnd + ":" + periodMinuteEnd);
           }
-          
         });
-        
-        
-        
-        
-        
-        
-        
-        
       })(i);
     }
+    window.alert("Active Period: " + activePeriod);
+    window.alert("URLs: " + activePeriodUrls);
+    
+    if (activePeriodUrls != "") {
+      var urlsArray = activePeriodUrls.split(',');
+      var urlsArrayLength = urlsArray.length;
+      for (var i = 0; i < urlsArrayLength; i++) {
+        chrome.tabs.create({
+        //tabId: tab.id,
+        url: "http://" + urlsArray[i],
+        active: false
+        });
+      }
+    }
+    
     
   });
   
