@@ -3,10 +3,12 @@ function okClick() {
 
   var tableRows = document.getElementById('sitesTable').rows.length; 
   var numberSites = getURLParameter("numSites");
-  var numberSitesLabel = "'period" + getURLParameter("period") + "_numberSites'";
   
+  var numberSitesLabel = "'period" + getURLParameter("period") + "_numberSites'";
   var urlsPeriodLabel = "'period" + getURLParameter("period") + "_urls'";
   var sitesPeriodLabel = "'period" + getURLParameter("period") + "_sites'";
+  
+  var numberSitesObj = {};
   var urlsObj = {};
   var sitesObj = {};
 
@@ -34,12 +36,15 @@ function okClick() {
       })(i);      
     }
     
+    numberSitesObj[numberSitesLabel] = numberSites;
     urlsObj[urlsPeriodLabel] = urlsString;
     sitesObj[sitesPeriodLabel] = namesString;
     
     chrome.storage.sync.set(urlsObj, function(){
       chrome.storage.sync.set(sitesObj, function(){
-        window.location = chrome.extension.getURL('options.html');
+        chrome.storage.sync.set(numberSitesObj, function(){
+          window.location = chrome.extension.getURL('options.html');
+        });
       });
     });
   });
@@ -95,7 +100,7 @@ function breakDownURL(url) {
     return page;
 }
 
-//Called when url text box is chaged
+//Called when url text box is changed
 //Breaks down url and puts it into name text box
 function onURLChange(siteNumber) {
   
@@ -118,24 +123,44 @@ function getURLParameter(name) {
 
 function loadSiteData() {
 
-  numberSites = getURLParameter("numSites");
+  var numberSites = getURLParameter("numSites");
+  var periodNumber = getURLParameter("period");
   
-  if (numberSites == 0) {
-    
-  } else if (numberSites == 1) {
-    
-  } else {
-    
-    for (var i = 1; i < numberSites; i++) {
-      (function(x) {
+  var urlsString = "";
+  var namesString = "";
+  
+  var urlsLabel = "'period" + periodNumber + "_urls'";
+  var namesLabel = "'period" + periodNumber + "_sites'";
+  
+  chrome.storage.sync.get(urlsLabel, function(data) {
+    urlsString = data[urlsLabel];
+    chrome.storage.sync.get(namesLabel, function(data) {
+      namesString = data[namesLabel];
+      if (numberSites == 0) {
         
-        addMoreClick();
-        
-      })(i);
-      
-    };
-    
-  }
+      } else if (numberSites == 1) {
+        document.getElementById('site1_url').value = urlsString.split(',')[0]
+        document.getElementById('site1_name').value = namesString.split(',')[0]
+      } else {
+        document.getElementById('site1_url').value = urlsString.split(',')[0]
+        document.getElementById('site1_name').value = namesString.split(',')[0]
+        for (var i = 1; i < numberSites; i++) {
+          (function(x) {
+            addMoreClick();
+            var row = x + 1;
+            document.getElementById('site' + row + '_url').value = urlsString.split(',')[x]
+            document.getElementById('site' + row + '_name').value = namesString.split(',')[x]
+          })(i);
+        };
+      }
+      //window.alert("urlsString: " + urlsString);
+    });
+  });
+  
+  
+  
+  
+  
    
 }
 
