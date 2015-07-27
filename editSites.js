@@ -5,6 +5,11 @@ function okClick() {
   var numberSites = getURLParameter("numSites");
   var numberSitesLabel = "'period" + getURLParameter("period") + "_numberSites'";
   
+  var urlsPeriodLabel = "'period" + getURLParameter("period") + "_urls'";
+  var sitesPeriodLabel = "'period" + getURLParameter("period") + "_sites'";
+  var urlsObj = {};
+  var sitesObj = {};
+
   var urlsString = "";
   var namesString = "";
   
@@ -28,9 +33,17 @@ function okClick() {
 
       })(i);      
     }
-    window.alert("urlsString: " + urlsString);
-    window.alert("namesString: " + namesString);
+    
+    urlsObj[urlsPeriodLabel] = urlsString;
+    sitesObj[sitesPeriodLabel] = namesString;
+    
+    chrome.storage.sync.set(urlsObj, function(){
+      chrome.storage.sync.set(sitesObj, function(){
+        window.location = chrome.extension.getURL('options.html');
+      });
+    });
   });
+  
 }
 
 function cancelClick() {

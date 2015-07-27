@@ -164,14 +164,18 @@ function editSites(periodNumber) {
     var numberSites = data[numberSitesField];
     //window.alert("numberSites: " + numberSites);
     
-    chrome.windows.create({
+    window.location = chrome.extension.getURL('editSites.html?numSites=' + numberSites + '&period=' + periodNumber);
+    
+    /* chrome.windows.create({
       //tabId: tab.id,
       url: chrome.extension.getURL('editSites.html?numSites=' + numberSites + '&period=' + periodNumber),
       type: 'popup',
       focused: true,
       width: 400,
       height: 370
-    });
+    }, function() {
+      window.location.reload();
+    }); */
   });
   
   
